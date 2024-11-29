@@ -1,12 +1,158 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <title>Base de Datos Jugadores</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Verifica la ruta del archivo CSS -->
+    <script>
+        // Función para cargar los jugadores
+        function cargarJugadores() {
+            fetch('http://localhost:3009/listar')
+                .then(response => response.json())
+                .then(data => {
+                    const tablaJugadores = document.getElementById('tabla-jugadores');
+                    tablaJugadores.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
+                    data.forEach(jugador => {
+                        const fila = document.createElement('tr');
+                        fila.innerHTML = `
+                            <td>${jugador.id}</td>
+                            <td>${jugador.Nombre}</td>
+                            <td>${jugador.Apellidos}</td>
+                            <td>${jugador.Genero}</td>
+                            <td>${jugador.Edad}</td>
+                            <td>${jugador["Nombre de Usuario"]}</td>
+                            <td>${jugador.Consola}</td>
+                            <td>${jugador["Correo Electronico"]}</td>
+                            <td>${jugador["Numero Telefonico"]}</td>
+                            <td>
+                                <button onclick="editarJugador(${jugador.id})">Editar</button>
+                                <button class="delete" onclick="eliminarJugador(${jugador.id})">Eliminar</button>
+                            </td>
+                        `;
+                        tablaJugadores.appendChild(fila);
+                    });
+                })
+                .catch(error => console.log('Error al cargar jugadores:', error));
+        }
+
+        // Función para agregar un nuevo jugador
+        function agregarJugador(event) {
+            event.preventDefault(); // Evitar el envío del formulario
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = new URLSearchParams(formData);
+
+            fetch('http://localhost:3009/agregar', {
+                method: 'POST',
+                body: data,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    cargarJugadores(); // Recargar la lista de jugadores
+                    form.reset(); // Limpiar el formulario
+                })
+                .catch(error => console.log('Error al agregar jugador:', error));
+        }
+
+        // Función para editar un jugador
+        function editarJugador(id) {
+            const nuevoNombre = prompt('Nuevo nombre:');
+            const nuevosApellidos = prompt('Nuevos apellidos:');
+            const nuevoGenero = prompt('Nuevo Género:');
+            const nuevaEdad = prompt('Nueva Edad:');
+            const nuevoNombreDeUsuario = prompt('Nuevo Nombre de Usuario:');
+            const nuevaConsola = prompt('Nueva Consola:');
+            const nuevoCorreoElectronico = prompt('Nuevo Correo Electrónico:');
+            const nuevoNumeroTelefonico = prompt('Nuevo Número Telefónico:');
+
+            fetch(`http://localhost:3009/editar/${id}`, { // Usa backticks
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `Nombre=${encodeURIComponent(nuevoNombre)}&Apellidos=${encodeURIComponent(nuevosApellidos)}&Genero=${encodeURIComponent(nuevoGenero)}&Edad=${encodeURIComponent(nuevaEdad)}&Nombre de Usuario=${encodeURIComponent(nuevoNombreDeUsuario)}&Consola=${encodeURIComponent(nuevaConsola)}&Correo Electronico=${encodeURIComponent(nuevoCorreoElectronico)}&Numero Telefonico=${encodeURIComponent(nuevoNumeroTelefonico)}`,
+            })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                    cargarJugadores(); // Recargar la lista de jugadores
+                })
+                .catch(error => console.log('Error al editar jugador:', error));
+        }
+
+        // Función para eliminar un jugador
+        function eliminarJugador(id) {
+            fetch(`http://localhost:3009/eliminar/${id}`, { // Usa backticks
+                method: 'POST',
+            })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                    cargarJugadores(); // Recargar la lista de jugadores
+                })
+                .catch(error => console.log('Error al eliminar jugador:', error));
+        }
+
+        // Cargar los jugadores al cargar la página
+        window.onload = function() {
+            cargarJugadores();
+        };
+    </script>
 </head>
 <body>
-    <h1>Inicio</h1>
+    <h2>Nuevo Jugador</h2>
+    <form id="form-agregar" onsubmit="agregarJugador(event)">
+        <label for="Nombre">Nombre:</label>
+        <input type="text" name="Nombre" id="Nombre" required><br><br>
+
+        <label for="Apellidos">Apellidos:</label>
+        <input type="text" name="Apellidos" id="Apellidos" required><br><br>
+
+        <label for="Genero">Género:</label>
+        <input type="text" name="Genero" id="Genero" required><br><br>
+
+        <label for="Edad">Edad:</label>
+        <input type="number" name="Edad" id="Edad"><br><br>
+
+        <label for="Nombre de Usuario">Nombre de Usuario:</label>
+        <input type="text" name="Nombre de Usuario" id="Nombre de Usuario"><br><br>
+
+        <label for="Consola">Consola:</label>
+        <input type="text" name="Consola" id="Consola"><br><br>
+
+        <label for="Correo Electronico">Correo Electrónico:</label>
+        <input type="text" name="Correo Electronico" id="Correo Electronico"><br><br>
+
+        <label for="Numero Telefonico">Número Telefónico:</label>
+        <input type="text" name="Numero Telefonico" id="Numero Telefonico"><br><br>
+
+        <button type="submit">Agregar Jugador</button>      
+    </form>
+
+    <h2>Lista de Jugadores</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Género</th>
+                <th>Edad</th>
+                <th>Nombre de Usuario</th>
+                <th>Consola</th>
+                <th>Correo Electrónico</th>
+                <th>Número Telefónico</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tabla-jugadores">
+            <!-- Aquí se mostrarán los jugadores -->
+        </tbody>
+    </table>
+
+    <br>
+    <button onclick="window.location.reload();">Recargar Lista</button>
+    
 </body>
 </html>

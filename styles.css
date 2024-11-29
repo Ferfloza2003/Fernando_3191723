@@ -1,0 +1,109 @@
+/* Tabla estilizada */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0px;
+    background-color: #6e00ff; /* Color inspirado en VEGETTA777 */
+    font-size: 14px; /* Aumenté el tamaño de la fuente */
+    margin-bottom: 20px; /* Margen inferior para separar de otros contenidos */
+}
+
+/* Encabezado de la tabla */
+th {
+    background-color: #4b0082; /* Color morado oscuro */
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #320059;
+}
+
+/* Celdas de la tabla */
+td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #320059;
+}
+
+/* Filas alternas */
+tr:nth-child(even) {
+    background-color: #b33cff; /* Color más claro para las filas alternas */
+}
+
+/* Efecto hover */
+tr:hover {
+    background-color: #d966ff;
+}
+
+/* Botones */
+button {
+    background-color: #ff4500; /* Naranja brillante para botones */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-block;
+    margin: 10px auto; /* Centra los botones */
+}
+
+/* Hover de los botones */
+button:hover {
+    background-color: #ff6347;
+}
+
+/* Botón eliminar */
+button.delete {
+    background-color: #ff0000; /* Rojo para el botón eliminar */
+}
+
+/* Hover del botón eliminar */
+button.delete:hover {
+    background-color: #cc0000;
+}
+
+/* Centrar contenido */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url('ZI.jpg'); /* Aquí puedes colocar la ruta de tu imagen de fondo */
+    background-size: cover;
+    background-position: center;
+}
+
+/* Cuadros de texto y diseño adicional */
+input, textarea {
+    border: 2px solid #4b0082;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+input:focus, textarea:focus {
+    border-color: #b33cff;
+    outline: none;
+}
+
+/* Etiquetas para los cuadros de texto */
+label {
+    font-weight: bold;
+    color: #4b0082;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Contenedor para los formularios */
+.form-container {
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    margin: 20px auto;
+}
